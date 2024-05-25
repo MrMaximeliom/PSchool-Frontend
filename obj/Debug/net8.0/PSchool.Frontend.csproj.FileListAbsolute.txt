@@ -1,0 +1,6 @@
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.csproj.AssemblyReference.cache
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.AssemblyInfoInputs.cache
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.AssemblyInfo.cs
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.csproj.CoreCompileInputs.cache
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\PSchool.Frontend.MvcApplicationPartsAssemblyInfo.cache

@@ -1,0 +1,140 @@
+﻿@page "/students"
+@inject HttpClient Http
+@using TestBlazor.Handlers
+@using TestBlazor.Models
+@inject IConfiguration Config
+@inject IStudentHandler StudentHandler
+
+<PageTitle>Students</PageTitle>
+
+<h1>Students</h1>
+
+
+@if (students == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+else
+{
+
+    <div class="col-auto my-1">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">Parent</label>
+        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"  @onchange="OnSelectedParentChanged">
+            <option selected >Choose...</option> 
+            <option value="All">All Students</option> 
+            @foreach (var parent in parentsNames)
+            {
+                <option value="@parent">@parent</option>
+
+
+            }
+        </select>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Parent Name</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    <td>@student.FirstName</td>
+                    <td>@student.LastName</td>
+                    <td>@student.ParentName</td>
+                    <td>@student.CreatedAt.ToString()</td>
+             
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Student?>? students;
+    private IEnumerable<Parent>? parentsWithStudents;
+    private List<string?> parentsNames;
+    private string? requestUrl;
+    private Parent[]? parents;
+    private string? selectedParent;
+
+    private async Task LoadData()
+    {
+        students = await StudentHandler.GetStudentsWithParents();
+
+        if (students is not null)
+        {
+
+            parentsNames = students.Select(
+                 p => p.ParentName
+              ).Distinct().ToList();
+
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+
+            await LoadData();
+
+
+
+        }
+
+        catch(Exception ex)
+        {
+            Console.WriteLine("Exception happened");
+            Console.WriteLine(ex.Message);
+            students = null;
+        }
+
+
+    }
+    private IEnumerable<Student?>? ParentSelected( string parentName)
+    {
+        Console.WriteLine("PArent selected");
+        if(students is not null)
+        {
+            var filteredStudents = students.Where(
+      p => p.ParentName.Equals(parentName)
+      );
+        }
+
+        return students!.Where(
+            p => p.ParentName.Equals(parentName)
+        ).ToList();
+
+    }
+    private async void OnSelectedParentChanged(ChangeEventArgs e)
+    {
+        var selectedParent = e?.Value?.ToString();
+        students = await StudentHandler.GetStudentsWithParents();
+        if (selectedParent != "All")
+        {
+            Console.WriteLine("not all");
+            students = students!.Where(
+      p => p.ParentName.Equals(selectedParent)
+      ).ToList();
+        
+
+        }
+        StateHasChanged();
+
+    
+        
+    }
+
+  
+
+
+}

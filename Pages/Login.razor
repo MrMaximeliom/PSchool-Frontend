@@ -1,0 +1,123 @@
+﻿@page "/login"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using TestBlazor.Models
+@using TestBlazor.Services;
+@inject IAuthenticationService AuthenticationService;
+@using System.ComponentModel.DataAnnotations;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IAuthorizationService AuthorizationService;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+<PageTitle>Login</PageTitle>
+
+
+<fieldset disabled="@(auth is not null)">
+    <EditForm Model="Model" OnValidSubmit="SubmitAsync" FormName="MyForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div>
+            <label for="email">Email:</label>
+            <InputText type="email" @bind-Value="Model!.Email" id="email" name="Model.Email" required />
+
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <InputText type="password" @bind-Value="Model!.Password"  id="password" name="Model.Password" required />
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </EditForm>
+</fieldset>
+
+
+@if(auth is not null)
+{
+    <p>You are logged in</p>
+}
+@if(errorMessage is not null)
+{
+    <p>@errorMessage</p>
+}
+@code {
+    [SupplyParameterFromForm]
+    public LoginModel Model { get; set; }
+    private string? message ;
+
+    protected override  void OnInitialized() {
+
+        Model ??= new();
+
+
+
+
+    }
+    private Auth? auth;
+
+    private string? errorMessage;
+    private async Task SubmitAsync()
+    {
+        try
+        {
+            if(String.IsNullOrEmpty(Model.Email) || String.IsNullOrEmpty(Model.Password))
+            {
+                errorMessage = "Email is required with password!";
+            }
+            auth = await AuthenticationService.LoginAsync(Model);
+
+
+            if(auth is not null)
+            {
+                try
+                {
+
+
+                    //await localStorage.SetItemAsync("JWT_KEY", auth!.Token);
+                    //await AuthenticationService.GetClaimTypeByTokenAsync(ClaimTypes.Name);
+                    NavigationManager.NavigateTo("/");
+                    StateHasChanged();
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                // to get item
+                //  string item = await localStorage.GetItemAsync<string>("JWT_KEY");
+
+                // to clear local storage
+                //  await localStorage.ClearAsync();
+            }
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+    }
+
+   /* private async Task CheckUserRoles()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if(user.IsInRole("Admin"))
+        {
+
+        }
+        else if((await AuthorizationService.AuthorizeAsync(user,"UserOnly")).Succeeded)
+        {
+
+        }
+        else
+        {
+            
+        }
+    }
+   */
+
+
+}
