@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudHNcQWRkU3R1ZGVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/HopeA/source/repos/PSchool/TestBlazor/Pages/Students/EditStudent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudHNcRWRpdFN0dWRlbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/HopeA/source/repos/PSchool/TestBlazor/Pages/Students/Students.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudHNcU3R1ZGVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

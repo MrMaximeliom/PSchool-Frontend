@@ -74,8 +74,6 @@
                 {
 
 
-                    //await localStorage.SetItemAsync("JWT_KEY", auth!.Token);
-                    //await AuthenticationService.GetClaimTypeByTokenAsync(ClaimTypes.Name);
                     NavigationManager.NavigateTo("/");
                     StateHasChanged();
                 }
@@ -84,11 +82,7 @@
                     Console.WriteLine(ex.Message);
                 }
 
-                // to get item
-                //  string item = await localStorage.GetItemAsync<string>("JWT_KEY");
-
-                // to clear local storage
-                //  await localStorage.ClearAsync();
+  
             }
         }
         catch(Exception ex)
@@ -98,26 +92,7 @@
 
     }
 
-   /* private async Task CheckUserRoles()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        var user = authState.User;
-
-        if(user.IsInRole("Admin"))
-        {
-
-        }
-        else if((await AuthorizationService.AuthorizeAsync(user,"UserOnly")).Succeeded)
-        {
-
-        }
-        else
-        {
-            
-        }
-    }
-   */
 
 
 }

@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "JGGirg1VY+g=",
+  "dgSpecHash": "2t8MMsbm4ME=",
   "success": true,
   "projectFilePath": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\TestBlazor.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HopeA\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\HopeA\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
     "C:\\Users\\HopeA\\.nuget\\packages\\blazored.sessionstorage\\2.4.0\\blazored.sessionstorage.2.4.0.nupkg.sha512",
+    "C:\\Users\\HopeA\\.nuget\\packages\\currietechnologies.razor.sweetalert2\\5.6.0\\currietechnologies.razor.sweetalert2.5.6.0.nupkg.sha512",
     "C:\\Users\\HopeA\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
     "C:\\Users\\HopeA\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
     "C:\\Users\\HopeA\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.5\\microsoft.aspnetcore.authorization.8.0.5.nupkg.sha512",

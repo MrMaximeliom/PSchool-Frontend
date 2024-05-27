@@ -1,9 +1,11 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TestBlazor;
+using TestBlazor.Constants;
 using TestBlazor.Handlers;
 using TestBlazor.Services;
 
@@ -28,6 +30,7 @@ builder.Services.AddOidcAuthentication(
 
 });*/
 //builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
+builder.Services.AddSweetAlert2();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
@@ -41,6 +44,8 @@ builder.Services.AddHttpClient("ServerApi")
     .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddSingleton<PageUrls>();
 /*builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 */
 

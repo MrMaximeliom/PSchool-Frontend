@@ -1,19 +1,20 @@
-﻿@page "/students/add-students"
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.EditStudentUrl+@"{studentId:int}")];
 @using TestBlazor.Models
 @inject IStudentHandler StudentHandler;
 @inject SweetAlertService Swal;
 @inject NavigationManager NavigationManager
 
 
-<PageTitle>Add Students</PageTitle>
+<PageTitle>Edit Student</PageTitle>
 
-<h4>Add New Students</h4>
-
-
+<h4>Edit a Student details</h4>
 
 
 
-<EditForm Model="StudentForm" OnValidSubmit="Submit" FormName="add-student">
+
+
+<EditForm Model="StudentForm" OnValidSubmit="Submit" FormName="edit-student">
     <AntiforgeryToken />
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -25,11 +26,20 @@
             {
                 @foreach (var parent in ParentDetails)
                 {
-                    <option value="@parent.Id">@parent.FullName</option>
+                    if(StudentForm!.ParentId == parent.Id)
+                    {
+                        <option value="@parent.Id" selected>@parent.FullName</option>
+                    }
+                    else
+                    {
+                        <option value="@parent.Id">@parent.FullName</option>
+                    }
+                  
 
 
                 }
             }
+            
         </select>
     </div>
     <div class="form-group mx-sm-3 mb-3 mx-lg-4 mx-md-4 w-25">
@@ -38,32 +48,39 @@
     </div>
     <div class="form-group mx-sm-3 mb-3 mx-lg-4 mx-md-4 w-25">
         <label for="exampleInputEmail1">Last Name</label>
-        <InputText @bind-Value="StudentForm!.LastName" type="text" class="form-control" id="exampleInputStudentLastName" placeholder="Enter student last name" required />
+        <InputText @bind-Value="StudentForm!.LastName" type="text" class="form-control" id="exampleInputStudentLastName" placeholder="Enter student last name"  required />
     </div>
     <div class="form-group mx-sm-3 mb-3 mx-lg-4 mx-md-4 w-25 mt-3">
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </div>
 </EditForm>
 
-@if(errorMessage != null)
+@if (errorMessage != null)
 {
     <p>@errorMessage</p>
 }
 
 
-@code{
-    [SupplyParameterFromForm]
-    private Student? StudentForm { get; set; }
+@code {
+    private Student? StudentForm = new();
     private List<ParentShortDetails>? ParentDetails { get; set; }
     private string? errorMessage;
 
+    [Parameter]
+    public int studentId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-
-        if (StudentForm is null)
-            StudentForm = new();
-        if (ParentDetails is null)
+        try
+        {
+            StudentForm = await StudentHandler.GetStudentById(studentId);
             ParentDetails = await StudentHandler.GetParentShortDetails();
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
 
     }
 
@@ -73,33 +90,38 @@
         {
             if (StudentForm is not null)
             {
-                var response = await StudentHandler.AddStudent(StudentForm);
-            }
-            await Swal.FireAsync(new SweetAlertOptions
-                {
-                    
-                   Icon = SweetAlertIcon.Success,
-                        Title = $"Student {StudentForm!.FirstName} has been added successfully",
-                        ShowConfirmButton =  false,
-                        Timer = 1500 
-                    
-                }
+                var response = await StudentHandler.UpdateStudent(studentId,StudentForm);
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
 
-                 
-            );
+                        Icon = SweetAlertIcon.Success,
+                        Title = "Student:" + $"{StudentForm!.FirstName} details updated successfully",
+                        ShowConfirmButton = false,
+                        Timer = 1500
+
+                    }
+
+
+           );
+            }
+            else
+            {
+                Console.WriteLine("form is null dude");
+            }
+
             NavigationManager.NavigateTo("/students/list");
             StateHasChanged();
 
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             errorMessage = ex.Message;
         }
-  
+
 
 
     }
 
- 
+
 }

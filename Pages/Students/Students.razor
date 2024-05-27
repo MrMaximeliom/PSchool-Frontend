@@ -1,13 +1,15 @@
-﻿@page "/students"
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.ListStudentUrl)];
 @inject HttpClient Http
 @using TestBlazor.Handlers
 @using TestBlazor.Models
 @inject IConfiguration Config
 @inject IStudentHandler StudentHandler
+@inject SweetAlertService Swal;
 
 <PageTitle>Students</PageTitle>
 
-<h1>Students</h1>
+<h4>Students</h4>
 
 
 @if (students == null)
@@ -21,14 +23,17 @@ else
     <div class="col-auto my-1">
         <label class="mr-sm-2" for="inlineFormCustomSelect">Parent</label>
         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"  @onchange="OnSelectedParentChanged">
-            <option selected >Choose...</option> 
-            <option value="All">All Students</option> 
-            @foreach (var parent in parentsNames)
+            <option selected value="All">Choose...</option>
+            @if(parentsNames != null)
             {
-                <option value="@parent">@parent</option>
+                @foreach (var parent in parentsNames)
+                {
+                    <option value="@parent">@parent</option>
 
 
+                }
             }
+       
         </select>
     </div>
     <table class="table">
@@ -37,7 +42,8 @@ else
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Parent Name</th>
-                <th>Created At</th>
+                <th>Registered At</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +54,14 @@ else
                     <td>@student.LastName</td>
                     <td>@student.ParentName</td>
                     <td>@student.CreatedAt.ToString()</td>
+                    <td>
+
+
+                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EditStudentUrl}{student.Id}")>Edit</a>
+                        <button type="submit" class="btn btn-danger mr-2" @onclick="() => DeleteStudent(student.Id)">Delete</button>
+
+                    
+                    </td>
              
                 </tr>
             }
@@ -59,7 +73,7 @@ else
 @code {
     private List<Student?>? students;
     private IEnumerable<Parent>? parentsWithStudents;
-    private List<string?> parentsNames;
+    private List<string?>? parentsNames;
     private string? requestUrl;
     private Parent[]? parents;
     private string? selectedParent;
@@ -93,45 +107,80 @@ else
 
         catch(Exception ex)
         {
-            Console.WriteLine("Exception happened");
-            Console.WriteLine(ex.Message);
+
             students = null;
         }
 
 
     }
-    private IEnumerable<Student?>? ParentSelected( string parentName)
-    {
-        Console.WriteLine("PArent selected");
-        if(students is not null)
-        {
-            var filteredStudents = students.Where(
-      p => p.ParentName.Equals(parentName)
-      );
-        }
 
-        return students!.Where(
-            p => p.ParentName.Equals(parentName)
-        ).ToList();
-
-    }
     private async void OnSelectedParentChanged(ChangeEventArgs e)
     {
-        var selectedParent = e?.Value?.ToString();
         students = await StudentHandler.GetStudentsWithParents();
-        if (selectedParent != "All")
+        if(students is not null)
         {
-            Console.WriteLine("not all");
-            students = students!.Where(
-      p => p.ParentName.Equals(selectedParent)
-      ).ToList();
-        
+            var selectedParent = e?.Value?.ToString();
+
+            if (selectedParent != "All")
+            {
+                students = students!.Where(
+          p => p.ParentName.Equals(selectedParent)
+          ).ToList();
+
+
+            }
+            StateHasChanged();
 
         }
-        StateHasChanged();
 
+
+
+
+    }
+
+    private async Task DeleteStudent(int studentId)
+    {
+        Student? student = new();
+        // Promise/Task based
+        await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "You will not be able to recover this imaginary file!",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            }).ContinueWith(async swalTask =>
+    {
+    SweetAlertResult result = swalTask.Result;
+    if (!string.IsNullOrEmpty(result.Value))
+    {
+        // call delete student api here
+        student = await StudentHandler.DeleteStudentById(studentId);
+        if (student is not null)
+        {
+            await LoadData();
+            StateHasChanged();
+        }
     
-        
+        await Swal.FireAsync(
+       "Deleted",
+       $"Student {student!.FirstName} deleted successfully!",
+       SweetAlertIcon.Success
+       );
+
+    }
+    else if (result.Dismiss == DismissReason.Cancel)
+    {
+        await Swal.FireAsync(
+       "Cancelled",
+       "Your imaginary file is safe :)",
+       SweetAlertIcon.Error
+       );
+    }
+        });
+     
+       
     }
 
   

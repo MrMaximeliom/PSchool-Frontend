@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[2.4.0, )"
             },
+            "CurrieTechnologies.Razor.SweetAlert2": {
+              "target": "Package",
+              "version": "[5.6.0, )"
+            },
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"

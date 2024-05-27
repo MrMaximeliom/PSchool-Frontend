@@ -45,9 +45,6 @@ namespace TestBlazor.Services
                 throw new UnauthorizedAccessException("Login Faild");
 
             }
-            var jsonString = await response.Content.ReadAsStringAsync();
-
-            JsonSerializer.Deserialize<Auth>(jsonString);
 
             var content = await response.Content.ReadFromJsonAsync<Auth>() ?? throw new InvalidDataException();
              await _sessionStorageService.SetItemAsync(JWT_KEY, content.Token);

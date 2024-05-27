@@ -1111,3 +1111,9 @@ C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\webcil\Mapster.C
 C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\compressed\i3cg4d3p6e.gz
 C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\compressed\pki9vkee30.gz
 C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\compressed\t6qgwn4oj7.gz
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\TestBlazor.sourcelink.json
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\bin\Debug\net8.0\wwwroot\_framework\CurrieTechnologies.Razor.SweetAlert2.wasm
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\bin\Debug\net8.0\wwwroot\_framework\CurrieTechnologies.Razor.SweetAlert2.wasm.gz
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\bin\Debug\net8.0\CurrieTechnologies.Razor.SweetAlert2.dll
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\webcil\CurrieTechnologies.Razor.SweetAlert2.wasm
+C:\Users\HopeA\source\repos\PSchool\TestBlazor\obj\Debug\net8.0\compressed\ljrq00n1fa.gz

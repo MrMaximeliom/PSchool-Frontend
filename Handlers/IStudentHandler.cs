@@ -10,6 +10,11 @@ namespace TestBlazor.Handlers
 
         Task<string[]?> GetParentsFullNames();
 
-        Task<IEnumerable<Parent>> GetParentsWithStudents(); 
+        Task<IEnumerable<Parent>> GetParentsWithStudents();
+        Task<List<ParentShortDetails>?> GetParentShortDetails();
+        Task<Student?> AddStudent(Student student);
+        Task<Student?> GetStudentById(int id);
+        Task<Student?> UpdateStudent(int id, Student student);
+        Task<Student?> DeleteStudentById(int id);
     }
 }
