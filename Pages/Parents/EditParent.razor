@@ -1,0 +1,142 @@
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.EditParentUrl+@"{parentId:int}")];
+@using TestBlazor.Models
+@inject IParentHandler ParentHandler;
+@inject SweetAlertService Swal;
+@inject NavigationManager NavigationManager
+
+
+<PageTitle>Edit Parent</PageTitle>
+
+<h4>Edit a Parent details</h4>
+
+
+
+<EditForm Model="ParentForm" OnValidSubmit="Submit" FormName="edit-parent">
+    <AntiforgeryToken />
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+   <div class="row my-4">
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentFirstName">First Name</label>
+            <InputText @bind-Value="RegisterParent!.FirstName" type="text" class="form-control" id="exampleInputParentFirstName" placeholder="Enter parent first name" required />
+        </div>
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentLastName">Last Name</label>
+            <InputText @bind-Value="RegisterParent!.LastName" type="text" class="form-control" id="exampleInputParentLastName" placeholder="Enter parent last name" required />
+        </div>
+    </div>
+
+    <div class="row my-4">
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentEmail">Email</label>
+            <InputText @bind-Value="RegisterParent!.Email" type="email" class="form-control" id="exampleInputParentEmail" placeholder="Enter parent last name" required />
+        </div>
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentPhoneNumber">Phone Number</label>
+            <InputText @bind-Value="RegisterParent!.PhoneNumber" type="text" class="form-control" id="exampleInputParentPhoneNumber" placeholder="Enter parent work phone" required />
+        </div>
+    </div> 
+
+    <div class="row my-4">
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentWorkPhone">Work Phone</label>
+            <InputText @bind-Value="ParentForm!.WorkPhone" type="text" class="form-control" id="exampleInputParentWorkPhone" placeholder="Enter parent work phone" required />
+        </div>
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentSiblings">Siblings</label>
+            <InputNumber @bind-Value="ParentForm!.Siblings" min="1" class="form-control" id="exampleInputParentSiblings" placeholder="Enter parent siblings" required />
+        </div>
+    </div>
+
+
+    <div class="col-md-4 mx-2">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</EditForm>
+
+@if (errorMessage != null)
+{
+    <p>@errorMessage</p>
+}
+
+
+@code {
+    private Parent? ParentForm = new();
+    private RegisterUser? RegisterParent = new();
+    private string? errorMessage;
+
+    [Parameter]
+    public int parentId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ParentForm = await ParentHandler.GetParentWithDetailsById(parentId);
+            if (ParentForm is not null)
+            {
+                RegisterParent = new();
+                RegisterParent.PhoneNumber = ParentForm!.User!.PhoneNumber;
+                RegisterParent.LastName = ParentForm!.User!.LastName;
+                RegisterParent.FirstName = ParentForm!.User!.FirstName;
+                RegisterParent.Email = ParentForm!.User!.Email;
+
+            }
+
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+
+    }
+
+    private async Task Submit()
+    {
+        try
+        {
+            if (ParentForm is not null && RegisterParent is not null)
+            {
+                ParentForm.User.FirstName = RegisterParent.FirstName;
+                ParentForm.User.LastName = RegisterParent.LastName;
+                ParentForm.User.Email = RegisterParent.Email;
+                ParentForm.User.PhoneNumber = RegisterParent.PhoneNumber;
+                var response = await ParentHandler.UpdateParentWithDetails(parentId,ParentForm);
+
+                Console.WriteLine(response);
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+
+                        Icon = SweetAlertIcon.Success,
+                        Title = "Parent:" + $"{ParentForm.User!.FirstName} details updated successfully",
+                        ShowConfirmButton = false,
+                        Timer = 1500
+
+                    }
+
+
+           );
+            }
+            else
+            {
+                Console.WriteLine("form is null dude");
+            }
+
+            NavigationManager.NavigateTo(PageUrls.ListParentUrl);
+            StateHasChanged();
+
+
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+
+
+    }
+
+
+}

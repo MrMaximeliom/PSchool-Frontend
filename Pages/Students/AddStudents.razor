@@ -1,4 +1,5 @@
-﻿@page "/students/add-students"
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.AddStudentUrl)];
 @using TestBlazor.Models
 @inject IStudentHandler StudentHandler;
 @inject SweetAlertService Swal;
@@ -8,8 +9,6 @@
 <PageTitle>Add Students</PageTitle>
 
 <h4>Add New Students</h4>
-
-
 
 
 

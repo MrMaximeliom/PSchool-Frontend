@@ -1,7 +1,188 @@
-﻿@page "/parents"
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.ListParentUrl)];
 
 <PageTitle>Parents</PageTitle>
 
-<h1>Hello, This is the parents page</h1>
+@inject HttpClient Http
+@using TestBlazor.Handlers
+@using TestBlazor.Models
+@inject IConfiguration Config
+@inject IParentHandler ParentHandler
+@inject SweetAlertService Swal;
 
 
+<h4>Parents</h4>
+
+
+@if (parents == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+else
+{
+    <div class="row">
+        <div class="col-md-4 mx-2">
+                    <label for="exampleDataList" class="form-label">Choose a parent</label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" @onchange="OnSelectedParentChanged">
+                <option selected value="All">Choose...</option>
+                @if (parentsNames != null)
+                {
+                    @foreach (var parent in parentsNames)
+                    {
+                        <option value="@parent">@parent</option>
+
+
+                    }
+                }
+
+            </select>
+        </div>
+
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Work Phone</th>
+                <th>Siblings</th>
+                <th>Registered At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var parent in parents)
+            {
+                <tr>
+                    <td>@parent.FullName</td>
+                    <td>@parent!.WorkPhone</td>
+                    <td>@parent.Siblings</td>
+                    <td>@parent.CreatedAt.ToString()</td>
+                    <td>
+                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EditParentUrl}{parent.Id}")>Edit</a>
+                        <button type="submit" class="btn btn-danger mr-2" @onclick="() => DeleteParent(parent.Id)">Delete</button>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Parent>? parents;
+    private IEnumerable<Parent>? parentsWithStudents;
+    private List<string?>? parentsNames = new();
+    private string? requestUrl;
+    private string? selectedParent;
+
+    private async Task LoadData()
+    {
+        parents = await ParentHandler.GetParentsWithDetails();
+        if (parents is not null)
+        {
+            foreach(var d in parents)
+            {
+                parentsNames.Add(d.FullName);
+            }
+
+
+
+        }
+
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadData();
+        }
+
+        catch (Exception)
+        {
+
+            parents = null;
+        }
+
+
+    }
+
+    private async Task DeleteParent(int parentId)
+    {
+        Parent? parent = new();
+        // Promise/Task based
+        await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "You will not be able to recover this step!",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            }).ContinueWith(async swalTask =>
+    {
+    SweetAlertResult result = swalTask.Result;
+    if (!string.IsNullOrEmpty(result.Value))
+    {
+        // call delete student api here
+        parent = await ParentHandler.DeleteParentById(parentId);
+        if (parent is not null)
+        {
+            await LoadData();
+            StateHasChanged();
+        }
+
+        await Swal.FireAsync(
+       "Deleted",
+       $"Student {parent?.User?.FirstName} deleted successfully!",
+       SweetAlertIcon.Success
+       );
+
+    }
+    else if (result.Dismiss == DismissReason.Cancel)
+    {
+        await Swal.FireAsync(
+       "Cancelled",
+      $"Student {parent?.User?.FirstName} data are safe",
+       SweetAlertIcon.Error
+       );
+    }
+    });
+
+
+    }
+
+    private async void OnSelectedParentChanged(ChangeEventArgs e)
+    {
+        await LoadData();
+        if (parents is not null)
+        {
+            var selectedParent = e?.Value?.ToString();
+
+            if (selectedParent != "All" && !string.IsNullOrEmpty(selectedParent))
+            {
+                parents = parents!.Where(
+          p => p.FullName.Equals(selectedParent)
+          ).ToList();
+
+
+            }
+
+
+        }
+        else
+        {
+            await LoadData();
+        }
+        StateHasChanged();
+    }
+
+
+
+
+}

@@ -4,6 +4,7 @@ using static System.Net.WebRequestMethods;
 using TestBlazor.Pages;
 using System.Text.Json;
 using Mapster;
+using TestBlazor.Constants;
 
 namespace TestBlazor.Handlers
 {
@@ -11,7 +12,7 @@ namespace TestBlazor.Handlers
     {
         private readonly string baseRequestUrl = $"{configuration.GetValue<string>("ServerUrl")}";
 
-        private readonly string baseStudentsRequestUrl = $"{configuration.GetValue<string>("ServerUrl")}/students";
+        private readonly string baseStudentsRequestUrl = $"{configuration.GetValue<string>("ServerUrl")}"+PageUrls.MainStudentUrl;
 
         private readonly HttpClient _httpClient = factory.CreateClient("ServerUrl");
 

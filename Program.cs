@@ -37,6 +37,8 @@ builder.Services.AddBlazoredSessionStorage();
 
 builder.Services.AddTransient<AuthenticationHandler>();
 builder.Services.AddScoped<IStudentHandler,StudentHandler>();
+builder.Services.AddScoped<IParentHandler,ParentHandler>();
+builder.Services.AddScoped<IUserHandler,UserHandler>();
 
 
 builder.Services.AddHttpClient("ServerApi")

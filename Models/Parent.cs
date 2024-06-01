@@ -15,15 +15,15 @@
 
         // Relation properties
 
-        public string UserId { get; set; } = string.Empty;
+        public string? UserId { get; set; } = string.Empty;
 
         // Navigation properties
         public User? User { get; set; }
         public List<Student>? Students { get; set; }
 
-        public string FullName => User?.FullName ?? string.Empty;
+        public string? FullName { get; set; } = string.Empty;
 
-      
+
 
     }
 }

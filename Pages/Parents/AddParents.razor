@@ -1,7 +1,158 @@
-﻿@page "/add-parents"
+﻿@inject PageUrls PageUrls;
+@attribute [Route(PageUrls.AddParentUrl)];
+@using Mapster
+@using TestBlazor.Models
+@inject IParentHandler ParentHandler;
+@inject IUserHandler UserHandler;
+@inject SweetAlertService Swal;
+@inject NavigationManager NavigationManager
 
 <PageTitle>Add Parents</PageTitle>
 
-<h1>Hello, This is the add parents page</h1>
 
+
+<EditForm Model="ParentForm" OnValidSubmit="Submit" FormName="add-parent">
+    <AntiforgeryToken />
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentFirstName">First Name</label>
+            <InputText @bind-Value="RegisterParent!.FirstName" type="text" class="form-control" id="exampleInputParentFirstName" placeholder="Enter parent first name" required />
+        </div>
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentLastName">Last Name</label>
+            <InputText @bind-Value="RegisterParent!.LastName" type="text" class="form-control" id="exampleInputParentLastName" placeholder="Enter parent last name" required />
+        </div>
+    </div>
+
+    <div class="row my-4">
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentEmail">Email</label>
+            <InputText @bind-Value="RegisterParent!.Email" type="email" class="form-control" id="exampleInputParentEmail" placeholder="Enter parent last name" required />
+        </div>
+        <div class="col-md-4 mx-2">
+            <label for="exampleInputParentPhoneNumber">Phone Number</label>
+            <InputText @bind-Value="RegisterParent!.PhoneNumber" type="text" class="form-control" id="exampleInputParentPhoneNumber" placeholder="Enter parent work phone" required />
+        </div>
+    </div >
+
+    <div class="row my-4">
+    <div class="col-md-4 mx-2">
+            <label for="exampleInputPassword">Password</label>
+        <InputText @bind-Value="RegisterParent!.Password" type="password" class="form-control" id="exampleInputPassword" placeholder="Enter parent work phone" required />
+    </div>
+    <div class="col-md-4 mx-2">
+            <label for="exampleInputConfirmPassword">Confirm Password</label>
+            <InputText @bind-Value="RegisterParent!.ConfirmPassword" type="password" class="form-control" id="exampleInputConfirmPassword" placeholder="Enter parent work phone" required @onchange="validatePasswordsMatch" />
+        <span style="color:red;">@passwordsAreNotMatched</span>
+    </div>
+    </div>
+
+    <div class="row my-4">
+            <div class="col-md-4 mx-2">
+            <label for="exampleInputParentWorkPhone">Work Phone</label>
+        <InputText @bind-Value="ParentForm!.WorkPhone" type="text" class="form-control" id="exampleInputParentWorkPhone" placeholder="Enter parent work phone" required />
+    </div>
+    <div class="col-md-4 mx-2">
+            <label for="exampleInputParentSiblings">Siblings</label>
+        <InputNumber @bind-Value="ParentForm!.Siblings" min="1" class="form-control" id="exampleInputParentSiblings" placeholder="Enter parent siblings" required />
+    </div>
+    </div>
+
+
+    <div class="col-md-4 mx-2">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</EditForm>
+
+@if (errorMessage != null)
+{
+    <p>@errorMessage</p>
+}
+
+
+@code {
+    [SupplyParameterFromForm]
+    private Parent? ParentForm { get; set; } = new();
+    private RegisterUser? RegisterParent { get; set; } = new();
+    private string? errorMessage;
+    private string passwordsAreNotMatched = string.Empty;
+
+
+    private async Task Submit()
+    {
+
+        if (ParentForm is not null && RegisterParent is not null)
+        {
+            try
+            {
+
+                RegisterParent.Username = $"{RegisterParent.FirstName}{RegisterParent.LastName}";
+                var responseAddUser = await UserHandler.AddUserAsync(RegisterParent);
+                if (responseAddUser is not null)
+                {
+                    ParentForm.UserId = responseAddUser.Id;
+                    var response = await ParentHandler.AddParent(ParentForm);
+
+                    await Swal.FireAsync(new SweetAlertOptions
+                            {
+
+                                Icon = SweetAlertIcon.Success,
+                                Title = $"Parent {RegisterParent.FirstName} has been added successfully",
+                                ShowConfirmButton = false,
+                                Timer = 1500
+
+                            }
+
+
+       );
+                    NavigationManager.NavigateTo(PageUrls.ListParentUrl);
+                    StateHasChanged();
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+
+
+                errorMessage = ex.Message;
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+
+                        Icon = SweetAlertIcon.Error,
+                        Title = $"Parent {RegisterParent.FirstName} failed to add .. try again later",
+                        ShowConfirmButton = false,
+                        Timer = 1500
+
+                    }
+      );
+
+
+            }
+
+
+        }
+
+
+
+
+
+    }
+
+    private void validatePasswordsMatch(ChangeEventArgs e)
+    {
+        string? confirmPassword = e?.Value?.ToString();
+        string? passowrd = RegisterParent?.Password;
+
+        if(passowrd is not null && confirmPassword is not null && !confirmPassword.Equals(string.Empty))
+        {
+            passwordsAreNotMatched = "Passwords are not matched!";
+
+        }
+    }
+
+
+}
 

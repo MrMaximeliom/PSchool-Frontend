@@ -56,7 +56,6 @@ else
                     <td>@student.CreatedAt.ToString()</td>
                     <td>
 
-
                         <a class="btn btn-primary mr-2" href=@($"{PageUrls.EditStudentUrl}{student.Id}")>Edit</a>
                         <button type="submit" class="btn btn-danger mr-2" @onclick="() => DeleteStudent(student.Id)">Delete</button>
 
@@ -96,13 +95,7 @@ else
     {
         try
         {
-
-
-
             await LoadData();
-
-
-
         }
 
         catch(Exception ex)
@@ -132,10 +125,6 @@ else
             StateHasChanged();
 
         }
-
-
-
-
     }
 
     private async Task DeleteStudent(int studentId)
@@ -174,7 +163,7 @@ else
     {
         await Swal.FireAsync(
        "Cancelled",
-       "Your imaginary file is safe :)",
+      $"Student {student!.FirstName} data are safe",
        SweetAlertIcon.Error
        );
     }

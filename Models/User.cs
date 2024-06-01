@@ -1,7 +1,11 @@
-﻿namespace TestBlazor.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TestBlazor.Models
 {
-    public class User
+    public class User : IdentityUser
     {
+        public string? Id { get; set; }
+
         public string FirstName { get; set; } = string.Empty;
 
         public string LastName { get; set; } = string.Empty;

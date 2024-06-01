@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject PageUrls PageUrls;
+
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">PSchool</a>
@@ -25,12 +27,12 @@
             </NavLink>
             @if(expandMenuParent)
             {
-                <NavLink class="nav-link" href="parents">
+                <NavLink class="nav-link" href=@PageUrls.ListParentUrl>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                     </svg> Parents List
                 </NavLink>
-                <NavLink class="nav-link" href="add-parents">
+                <NavLink class="nav-link" href=@PageUrls.AddParentUrl>
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Add Parents
                 </NavLink>
             }
@@ -43,12 +45,12 @@
             </NavLink>
             @if (expandMenuStudent)
             {
-                <NavLink class="nav-link" href="students/list">
+                <NavLink class="nav-link" href=@PageUrls.ListStudentUrl>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                     </svg> Students List
                 </NavLink>
-                <NavLink class="nav-link" href="students/add-students">
+                <NavLink class="nav-link" href=@PageUrls.AddStudentUrl>
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Add Students
                 </NavLink>
             }
