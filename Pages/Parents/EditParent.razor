@@ -1,5 +1,5 @@
 ﻿@inject PageUrls PageUrls;
-@attribute [Route(PageUrls.EditParentUrl+@"{parentId:int}")];
+@attribute [Route(PageUrls.EDIT_PARENT_URL+@"{parentId:int}")];
 @using TestBlazor.Models
 @inject IParentHandler ParentHandler;
 @inject SweetAlertService Swal;
@@ -124,7 +124,7 @@
                 Console.WriteLine("form is null dude");
             }
 
-            NavigationManager.NavigateTo(PageUrls.ListParentUrl);
+            NavigationManager.NavigateTo(PageUrls.LIST_PARENT_URL);
             StateHasChanged();
 
 

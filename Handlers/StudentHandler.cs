@@ -1,18 +1,12 @@
 ﻿using System.Net.Http.Json;
 using TestBlazor.Models;
-using static System.Net.WebRequestMethods;
-using TestBlazor.Pages;
-using System.Text.Json;
-using Mapster;
 using TestBlazor.Constants;
 
 namespace TestBlazor.Handlers
 {
     public class StudentHandler(IHttpClientFactory factory, IConfiguration configuration) : IStudentHandler
     {
-        private readonly string baseRequestUrl = $"{configuration.GetValue<string>("ServerUrl")}";
 
-        private readonly string baseStudentsRequestUrl = $"{configuration.GetValue<string>("ServerUrl")}"+PageUrls.MainStudentUrl;
 
         private readonly HttpClient _httpClient = factory.CreateClient("ServerUrl");
 
@@ -20,35 +14,35 @@ namespace TestBlazor.Handlers
         public async Task<Student[]?> GetStudents()
         {
 
-            return await _httpClient.GetFromJsonAsync<Student[]?>(baseStudentsRequestUrl);
+            return await _httpClient.GetFromJsonAsync<Student[]?>(PageUrls.MAIN_STUDENT_URL);
         }
 
         public async Task<List<Student?>?> GetStudentsWithParents()
         {
-                 return await _httpClient.GetFromJsonAsync<List<Student?>?>(baseStudentsRequestUrl + "/with-parents");
+                 return await _httpClient.GetFromJsonAsync<List<Student?>?>(PageUrls.LIST_STUDENTS_WITH_PARENTS_ENDPOINT);
    
            
         }
 
         public async Task<List<ParentShortDetails>?> GetParentShortDetails()
         {
-            return await _httpClient.GetFromJsonAsync<List<ParentShortDetails>?>(baseRequestUrl + "/parents/with-short-details");
+            return await _httpClient.GetFromJsonAsync<List<ParentShortDetails>?>(PageUrls.LIST_PARENTS_SHORT_DETAILS_ENDPOINT);
 
         }
 
         public async Task<string[]?> GetParentsFullNames()
         {
-            return await _httpClient.GetFromJsonAsync <string[]?>(baseStudentsRequestUrl + "/parents-names");
+            return await _httpClient.GetFromJsonAsync <string[]?>(PageUrls.LIST_PARENTS_NAMES_ENDPOINT);
         }
 
         public async Task<IEnumerable<Parent>?> GetParentsWithStudents()
         {
-            return await _httpClient.GetFromJsonAsync <IEnumerable<Parent>?>(baseRequestUrl + "/parents/students");
+            return await _httpClient.GetFromJsonAsync <IEnumerable<Parent>?>(PageUrls.LIST_PARENT_STUDENTS_ENDPOINT);
         }
 
         public async Task<Student?> AddStudent(Student student)
         {
-            var response = await _httpClient.PostAsync(baseStudentsRequestUrl, JsonContent.Create(student));
+            var response = await _httpClient.PostAsync(PageUrls.MAIN_STUDENT_ENDPOINT, JsonContent.Create(student));
 
             if (!response.IsSuccessStatusCode)
             {
@@ -59,7 +53,7 @@ namespace TestBlazor.Handlers
         }
         public async Task<Student?> UpdateStudent(int id,Student student)
         {
-            var response = await _httpClient.PutAsync(baseStudentsRequestUrl + $"/{id}", JsonContent.Create(student));
+            var response = await _httpClient.PutAsync(PageUrls.MAIN_STUDENT_ENDPOINT + $"/{id}", JsonContent.Create(student));
 
             if (!response.IsSuccessStatusCode)
             {
@@ -71,10 +65,10 @@ namespace TestBlazor.Handlers
 
         public async Task<Student?> GetStudentById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Student?>(baseStudentsRequestUrl + $"/{id}");
+            return await _httpClient.GetFromJsonAsync<Student?>(PageUrls.MAIN_STUDENT_ENDPOINT + $"/{id}");
         }
 
-        public async Task<Student?> DeleteStudentById(int id) => await _httpClient.DeleteFromJsonAsync<Student?>(baseStudentsRequestUrl + $"/{id}");
+        public async Task<Student?> DeleteStudentById(int id) => await _httpClient.DeleteFromJsonAsync<Student?>(PageUrls.MAIN_STUDENT_ENDPOINT + $"/{id}");
 
 
 

@@ -8,11 +8,10 @@ namespace TestBlazor.Handlers
     {
         private readonly HttpClient _httpClient = factory.CreateClient("ServerUrl");
 
-        private readonly string baseUserRequestUrl = PageUrls.BASE_SERVER_URL + PageUrls.MAIN_USER_ROUTE;
 
         public async Task<User> AddUserAsync(RegisterUser registerUser)
         {
-            var response = await _httpClient.PostAsync(baseUserRequestUrl, JsonContent.Create(registerUser));
+            var response = await _httpClient.PostAsync(PageUrls.MAIN_USER_ENDPOINT, JsonContent.Create(registerUser));
 
             if (!response.IsSuccessStatusCode)
             {
@@ -26,7 +25,7 @@ namespace TestBlazor.Handlers
 
         public async Task<User?> GetUserById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<User?>(baseUserRequestUrl + $"/{id}");
+            return await _httpClient.GetFromJsonAsync<User?>(PageUrls.MAIN_USER_ENDPOINT + $"/{id}");
         }
     }
 }

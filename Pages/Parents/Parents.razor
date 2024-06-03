@@ -1,5 +1,5 @@
 ﻿@inject PageUrls PageUrls;
-@attribute [Route(PageUrls.ListParentUrl)];
+@attribute [Route(PageUrls.LIST_PARENT_URL)];
 
 <PageTitle>Parents</PageTitle>
 
@@ -61,7 +61,7 @@ else
                     <td>@parent.Siblings</td>
                     <td>@parent.CreatedAt.ToString()</td>
                     <td>
-                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EditParentUrl}{parent.Id}")>Edit</a>
+                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EDIT_PARENT_URL}{parent.Id}")>Edit</a>
                         <button type="submit" class="btn btn-danger mr-2" @onclick="() => DeleteParent(parent.Id)">Delete</button>
                     </td>
 
@@ -84,6 +84,7 @@ else
         parents = await ParentHandler.GetParentsWithDetails();
         if (parents is not null)
         {
+            parentsNames = new();
             foreach(var d in parents)
             {
                 parentsNames.Add(d.FullName);

@@ -66,11 +66,16 @@ a, .btn-link {
     }
 
 .loading-progress {
-    position: relative;
+/*    position: relative;
     display: block;
     width: 8rem;
     height: 8rem;
-    margin: 20vh auto 1rem auto;
+    margin: 20vh auto 1rem auto;*/
+display: flex;
+height: 100vh;
+width:100vw;
+justify-content:center;
+align-items:center;
 }
 
     .loading-progress circle {
@@ -100,4 +105,36 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}
+
+
+
+.loader {
+    width: 25px;
+    height: 50px;
+    display: grid;
+    color: #004AAD;
+    background: linear-gradient(currentColor 0 0) top/100% 2px, radial-gradient(farthest-side at top, #0000 calc(100% - 2px),currentColor calc(100% - 1px),#0000) top, linear-gradient(currentColor 0 0) bottom/100% 2px, radial-gradient(farthest-side at bottom, #0000 calc(100% - 2px),currentColor calc(100% - 1px),#0000) bottom;
+    background-size: 100% 1px,100% 50%;
+    background-repeat: no-repeat;
+    animation: l18 4s infinite linear;
+}
+
+    .loader::before,
+    .loader::after {
+        content: "";
+        grid-area: 1/1;
+        background: inherit;
+        border: inherit;
+        animation: inherit;
+    }
+
+    .loader::after {
+        animation-duration: 2s;
+    }
+
+@keyframes l18 {
+    100% {
+        transform: rotate(1turn)
+    }
 }

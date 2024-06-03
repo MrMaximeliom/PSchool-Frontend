@@ -1,5 +1,5 @@
 ﻿@inject PageUrls PageUrls;
-@attribute [Route(PageUrls.AddParentUrl)];
+@attribute [Route(PageUrls.ADD_PARENT_URL)];
 @using Mapster
 @using TestBlazor.Models
 @inject IParentHandler ParentHandler;
@@ -107,7 +107,7 @@
 
 
        );
-                    NavigationManager.NavigateTo(PageUrls.ListParentUrl);
+                    NavigationManager.NavigateTo(PageUrls.LIST_PARENT_URL);
                     StateHasChanged();
 
                 }

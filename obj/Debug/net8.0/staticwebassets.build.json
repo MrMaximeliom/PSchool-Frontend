@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OphdVVKa0MPzTXnh+x8CU1tUgckv8paCl2F1vXJvH5s=",
+  "Hash": "AugU9Azj4PE856y2bvppKPAFr4gEmgrQJZLe/H9oY64=",
   "Source": "TestBlazor",
   "BasePath": "/",
   "Mode": "Root",
@@ -9781,6 +9781,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\icon-192.png"
+    },
+    {
+      "Identity": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\wwwroot\\images\\school.jpg",
+      "SourceId": "TestBlazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "images/school.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\school.jpg"
     },
     {
       "Identity": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\wwwroot\\index.html",

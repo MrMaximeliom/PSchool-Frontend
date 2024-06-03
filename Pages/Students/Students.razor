@@ -1,5 +1,5 @@
 ﻿@inject PageUrls PageUrls;
-@attribute [Route(PageUrls.ListStudentUrl)];
+@attribute [Route(PageUrls.LIST_STUDENT_URL)];
 @inject HttpClient Http
 @using TestBlazor.Handlers
 @using TestBlazor.Models
@@ -56,7 +56,7 @@ else
                     <td>@student.CreatedAt.ToString()</td>
                     <td>
 
-                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EditStudentUrl}{student.Id}")>Edit</a>
+                        <a class="btn btn-primary mr-2" href=@($"{PageUrls.EDIT_STUDENT_URL}{student.Id}")>Edit</a>
                         <button type="submit" class="btn btn-danger mr-2" @onclick="() => DeleteStudent(student.Id)">Delete</button>
 
                     

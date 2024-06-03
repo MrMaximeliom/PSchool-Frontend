@@ -41,6 +41,10 @@
       "PackagePath": "staticwebassets\\icon-192.png"
     },
     {
+      "Id": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\wwwroot\\images\\school.jpg",
+      "PackagePath": "staticwebassets\\images\\school.jpg"
+    },
+    {
       "Id": "C:\\Users\\HopeA\\source\\repos\\PSchool\\TestBlazor\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
